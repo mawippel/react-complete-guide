@@ -33,44 +33,50 @@ class App extends Component {
     });
   }
 
+  deletePersonHandler = (index) => {
+    let persons = this.state.persons;
+    persons.splice(index, 1);
+    this.setState({ persons: persons });
+  }
+
   toggleShowPersons = () => {
     this.setState({ showPersons: !this.state.showPersons });
   }
 
   render() {
 
-    const style = {
-      backgroundColor: 'white',
-      font: 'inherit',
-      border: '1px solid blue',
-      padding: '8px',
-      cursor: 'pointer',
-      marginBottom: '8px'
+    let personList: null;
+
+    if (this.state.showPersons) {
+      personList = (
+        <div>
+          {this.state.persons.map((person, i) => {
+            return <Person key={i}
+              clickHandler={() => this.deletePersonHandler(i)}
+              name={person.name}
+              age={person.name} />
+          })}
+        </div>
+      )
     }
 
     return (
       <div className="App">
         <h1>Hi, i'm the brand new Marcelo's react.js app!</h1>
         <button style={style} onClick={this.toggleShowPersons}>Show Persons</button>
-        {this.state.showPersons ?
-          <div>
-            <Person
-              name={this.state.persons[0].name}
-              age={this.state.persons[0].age} />
-            <Person
-              name={this.state.persons[1].name}
-              age={this.state.persons[1].age}
-              clickHandler={this.switchNameHandler.bind(this, 'Just Clicked on the second Person')}
-              inputHandler={this.inputNameChangeHandler}
-            >My hobbies: Studying</Person>
-            <Person
-              name={this.state.persons[2].name}
-              age={this.state.persons[2].age} />
-          </div> : null
-        }
+        {personList}
       </div>
     );
   }
+}
+
+const style = {
+  backgroundColor: 'white',
+  font: 'inherit',
+  border: '1px solid blue',
+  padding: '8px',
+  cursor: 'pointer',
+  marginBottom: '8px'
 }
 
 export default App;
